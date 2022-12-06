@@ -24,7 +24,6 @@ class CsvFileReader internal constructor(
     private var rowNum = 0L
 
     private val parser = CsvParser(ctx.quoteChar, ctx.delimiter, ctx.escapeChar)
-    private val BOM = '\uFEFF'
 
     /**
      * read next csv row
@@ -115,7 +114,7 @@ class CsvFileReader internal constructor(
             } else {
                 null
             }
-        } else if (ctx.skipEmptyLine && (nextLine.isBlank() || nextLine == BOM.toString()) && leftOver.isBlank()) {
+        } else if (ctx.skipEmptyLine && nextLine.isBlank() && leftOver.isBlank()) {
             readUntilNextCsvRow(leftOver)
         } else {
             val value = if (leftOver.isEmpty()) {
